@@ -1,6 +1,4 @@
 import json
-import math
-
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -8,11 +6,16 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from mpl_toolkits.mplot3d import Axes3D
 
-
+with open('participant_101.json') as f:
+    data = json.load(f)
+index = 0
+dataframe = pd.DataFrame(columns=["x","y","z"])
+for line in data:
+    gp = line['Gaze Position 3D'] ['gp3']
+    dataframe.loc[index] = [gp[0],gp[1],gp[2]]
+    index = index +1
+print(dataframe)
 kmeans = KMeans(n_clusters=4).fit(dataframe)
-cluster_map = pd.DataFrame()
-cluster_map['data_index'] = dataframe.index.values
-cluster_map['cluster'] = kmeans.labels_
 centroids = kmeans.cluster_centers_
 print(centroids)
 
